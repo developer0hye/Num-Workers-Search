@@ -26,12 +26,60 @@ I measured the total time for loading all the training data of CIFAR10 Dataset w
 
 As you see, to find optimal num_worker is very important for fast training. But it is hard to pick optimal num_worker by some formular because it varies with pc spec and batch size.
 
-We can find optimal num_worker using full search algorithm.
-
 # My Solution
+
+We can simply find optimal num_worker using **full search algorithm**. And this can be
+
+
 ```python
-def search(dataset):
-  num_workers_list = [0, 1, 2, 4, 8, 16, 32, 64]
+import torch
+import numpy as np
+import os
+import time
+
+def search(dataset, batch_size=1, shuffle=False, sampler=None,
+           batch_sampler=None, collate_fn=None,
+           pin_memory=False, drop_last=False, timeout=0,
+           worker_init_fn=None, *, prefetch_factor=2,
+           persistent_workers=False, maximum_patience=3):
+    
+    max_num_workers = os.cpu_count() #refer to https://github.com/pytorch/pytorch/blob/master/torch/utils/data/dataloader.py    
+
+    optimal_num_worker = 0
+    min_total_time = np.finfo(np.float).max
+    patience = 0
+    
+    for num_workers in np.arange(max_num_workers + 1):
+        loader = torch.utils.data.DataLoader(dataset=dataset, 
+                                            batch_size=batch_size, 
+                                            shuffle=shuffle,
+                                            sampler=sampler,
+                                            batch_sampler=batch_sampler,
+                                            num_workers=num_workers,
+                                            collate_fn=collate_fn,
+                                            pin_memory=pin_memory,
+                                            drop_last=drop_last,
+                                            timeout=timeout,
+                                            worker_init_fn=worker_init_fn,
+                                            prefetch_factor=prefetch_factor,
+                                            persistent_workers=persistent_workers)
+
+        t1 = time.time()
+        for _ in loader: pass
+        t2 = time.time()
+        
+        total_time = t2 - t1
+        
+        if min_total_time > total_time:
+            optimal_num_worker = num_workers
+            min_total_time = total_time
+            patience = 0
+        else:
+            patience += 1
+            if patience > maximum_patience: # for early stopping
+                break
+
+    return optimal_num_worker
 ```
 
 This method needs to spend time to search optimal num_worker but it can significantly save the entire training time!
@@ -39,7 +87,19 @@ This method needs to spend time to search optimal num_worker but it can signific
 # In-script workflow
 
 ```python
-from nws import search
+import torch
+import nws
 
+batch_size = ...
+dataset = ...
 
+optimal_num_workers = nws.search(dataset=dataset,
+                                 batch_size=batch_size,
+                                 shuffle=True)
+
+loader = torch.utils.data.DataLoader(dataset=dataset,
+                                     batch_size=batch_size, 
+                                     ...,
+                                     num_workers=optimal_num_workers, 
+                                     ...)
 ```
