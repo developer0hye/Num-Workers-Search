@@ -75,7 +75,7 @@ def search(dataset, batch_size=1, shuffle=False, sampler=None,
             patience = 0
         else:
             patience += 1
-            if patience > maximum_patience: # for early stopping
+            if patience > maximum_patience: # early stopping condition
                 break
 
     return optimal_num_worker
