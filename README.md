@@ -28,8 +28,7 @@ As you see, to find optimal num_worker is very important for fast training. But 
 
 # My Solution
 
-We can simply find optimal num_worker using **full search algorithm**. And this can be
-
+I thought that we can find optimal num_workers through full search algorithm. I added some early stopping condition for speedup of this process. It is inspired from the learning rate scheduler [ReduceLROnPlateau](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.ReduceLROnPlateau.html#torch.optim.lr_scheduler.ReduceLROnPlateau).
 
 ```python
 import torch
