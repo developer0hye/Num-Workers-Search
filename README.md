@@ -5,8 +5,6 @@ num_worker search algorithm for fast PyTorch DataLoader
 
 To find **optimal** num_worker for PyTorch DataLoader is the key towards fast training.
 
-I simply did an experiment using CIFAR10 Dataset to show the importance of num_worker. 
-
 I measured the total time for loading all the training data of CIFAR10 Dataset with various num_worker size on my PC and Google's Colab.
 
 ## on my PC
