@@ -1,11 +1,11 @@
 # Num-Workers-Search
-num_worker search algorithm for fast PyTorch DataLoader
+num_workers search algorithm for fast PyTorch DataLoader
 
 # Background
 
-To find **optimal** num_worker for PyTorch DataLoader is the key towards fast training.
+To find **optimal** *num_workers* for PyTorch DataLoader is the key towards fast training.
 
-I measured the total time for loading all the training data of CIFAR10 Dataset with various num_worker size on my PC and Google's Colab.
+I measured the total time for loading all the training data of CIFAR10 Dataset with various *num_workers* size on my PC and Google's Colab.
 
 ## on my PC
 
@@ -22,11 +22,11 @@ I measured the total time for loading all the training data of CIFAR10 Dataset w
 
 ![image](https://user-images.githubusercontent.com/35001605/127024889-2bebfebb-bc35-46d2-ac14-70288790e461.png)
 
-As you see, to find optimal num_worker is very important for fast training. But it is hard to pick optimal num_worker by some formular because it varies with pc spec, dataset size, and batch size.
+As you see, to find optimal *num_workers* is very important for fast training. But it is hard to pick optimal *num_workers* by some formular because it varies with pc spec, dataset size, and batch size.
 
 # My Solution
 
-I thought that we can find optimal num_workers through full search algorithm. I added some early stopping condition for speedup of this process. It is inspired from the learning rate scheduler [ReduceLROnPlateau](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.ReduceLROnPlateau.html#torch.optim.lr_scheduler.ReduceLROnPlateau).
+I thought that we can find optimal *num_workers* through full search algorithm. I added some early stopping condition for speedup of this process. It is inspired from the learning rate scheduler [ReduceLROnPlateau](https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.ReduceLROnPlateau.html#torch.optim.lr_scheduler.ReduceLROnPlateau).
 
 ```python
 import torch
@@ -42,7 +42,7 @@ def search(dataset, batch_size=1, shuffle=False, sampler=None,
     
     max_num_workers = os.cpu_count() #refer to https://github.com/pytorch/pytorch/blob/master/torch/utils/data/dataloader.py    
 
-    optimal_num_worker = 0
+    optimal_num_workers = 0
     min_total_time = np.finfo(np.float).max
     patience = 0
     
@@ -68,7 +68,7 @@ def search(dataset, batch_size=1, shuffle=False, sampler=None,
         total_time = t2 - t1
         
         if min_total_time > total_time:
-            optimal_num_worker = num_workers
+            optimal_num_workers = num_workers
             min_total_time = total_time
             patience = 0
         else:
@@ -76,10 +76,10 @@ def search(dataset, batch_size=1, shuffle=False, sampler=None,
             if patience > maximum_patience: # early stopping condition
                 break
 
-    return optimal_num_worker
+    return optimal_num_workers
 ```
 
-This method needs to spend time to search optimal num_worker but it can significantly save the entire training time!
+This method needs to spend time to search optimal *num_workers* but it can significantly save the entire training time!
 
 # In-script workflow
 
