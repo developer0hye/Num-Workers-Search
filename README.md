@@ -1,5 +1,5 @@
 # Num-Workers-Search
-num_workers search algorithm for fast PyTorch DataLoader
+*num_workers* search algorithm for fast PyTorch DataLoader
 
 # Background
 
