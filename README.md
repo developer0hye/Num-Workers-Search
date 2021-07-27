@@ -22,7 +22,7 @@ I measured the total time for loading all the training data of CIFAR10 Dataset w
 
 ![image](https://user-images.githubusercontent.com/35001605/127024889-2bebfebb-bc35-46d2-ac14-70288790e461.png)
 
-As you see, to find optimal num_worker is very important for fast training. But it is hard to pick optimal num_worker by some formular because it varies with pc spec and batch size.
+As you see, to find optimal num_worker is very important for fast training. But it is hard to pick optimal num_worker by some formular because it varies with pc spec, dataset size, and batch size.
 
 # My Solution
 
