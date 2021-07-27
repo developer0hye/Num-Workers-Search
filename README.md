@@ -92,7 +92,7 @@ dataset = ...
 
 optimal_num_workers = nws.search(dataset=dataset,
                                  batch_size=batch_size,
-                                 shuffle=True)
+                                 ...)
 
 loader = torch.utils.data.DataLoader(dataset=dataset,
                                      batch_size=batch_size, 
