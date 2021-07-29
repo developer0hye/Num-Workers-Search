@@ -28,6 +28,8 @@ As you see, to find optimal *num_workers* is very important for fast training. B
 
 Trial and Error
 
+It can spend a long time to search optimal num_workers but it will save the entire training time.
+
 # In-script workflow
 
 ```python
