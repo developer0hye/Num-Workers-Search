@@ -24,6 +24,10 @@ I measured the total time for loading all the training data of CIFAR10 Dataset w
 
 As you see, to find optimal *num_workers* is very important for fast training. But it is hard to pick optimal *num_workers* by some formular because it varies with pc spec, dataset size, and batch size.
 
+# Solution
+
+Trial and Error
+
 # In-script workflow
 
 ```python
