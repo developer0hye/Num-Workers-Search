@@ -30,7 +30,7 @@ Trial and Error
 
 It can spend a long time to search optimal num_workers but it will save the entire training time.
 
-I use some tricks for speedup of this algorithm. If you are interested in this algorithm, refer to [nws.py](https://github.com/developer0hye/Num-Workers-Search/blob/main/nws.py).
+I use some tricks to reduce the execution time of this algorithm. If you are interested in this algorithm, refer to [nws.py](https://github.com/developer0hye/Num-Workers-Search/blob/main/nws.py).
 
 # In-script workflow
 
